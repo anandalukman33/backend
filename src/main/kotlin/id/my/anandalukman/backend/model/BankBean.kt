@@ -7,7 +7,7 @@ package id.my.anandalukman.backend.model
  */
 
 data class BankBean(
-        private var accountNumber: String,
-        private var trust: Double,
-        private var transactionFee: Int,
+        var accountNumber: String,
+        var trust: Double,
+        var transactionFee: Int,
 )
