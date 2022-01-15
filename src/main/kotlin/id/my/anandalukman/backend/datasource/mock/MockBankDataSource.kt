@@ -8,12 +8,15 @@ import org.springframework.stereotype.Repository
 class MockBankDataSource: BankDataSource {
 
     val banks = listOf(
-            BankBean("lukman ganteng", 3.14, 17),
+            BankBean("lukmanganteng", 3.14, 17),
             BankBean("1002", 4.15, 28),
             BankBean("1003", 5.16, 39)
     )
 
     override fun retrieveBanks(): Collection<BankBean> = banks
+    override fun retrieveBank(accountNumber: String): BankBean  = banks.firstOrNull {
+        it.accountNumber == accountNumber
+    } ?: throw NoSuchElementException("Tidak dapat menemukan data dari $accountNumber")
 
 //    Awalnya seperti ini, lalu biar simpel di convert menjadi expression body, seperti diatas
 //    override fun getBanks(): Collection<BankBean> {
