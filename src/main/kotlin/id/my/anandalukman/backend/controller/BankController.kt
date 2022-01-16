@@ -21,6 +21,10 @@ class BankController(private val service: BankService) {
     @ResponseStatus(CREATED)
     fun addBank(@RequestBody bankBean: BankBean): BankBean = service.addBank(bankBean)
 
+    @PatchMapping
+    @ResponseStatus(OK)
+    fun patchBank(@RequestBody bankBean: BankBean): BankBean = service.patchBank(bankBean)
+
     @ExceptionHandler(NoSuchElementException::class)
     fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
             ResponseEntity(e.message, NOT_FOUND)
