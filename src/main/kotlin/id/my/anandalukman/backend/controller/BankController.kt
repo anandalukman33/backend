@@ -25,6 +25,10 @@ class BankController(private val service: BankService) {
     @ResponseStatus(OK)
     fun patchBank(@RequestBody bankBean: BankBean): BankBean = service.patchBank(bankBean)
 
+    @DeleteMapping("/{accountNumber}")
+    @ResponseStatus(NO_CONTENT)
+    fun deleteBank(@PathVariable accountNumber: String): Unit = service.deleteBank(accountNumber)
+
     @ExceptionHandler(NoSuchElementException::class)
     fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
             ResponseEntity(e.message, NOT_FOUND)

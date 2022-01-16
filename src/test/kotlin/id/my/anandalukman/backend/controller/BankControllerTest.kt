@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.get
-import org.springframework.test.web.servlet.patch
-import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.*
 
 /**
  * Testing ini berfungsi untuk mengetest RestApi
@@ -213,7 +210,54 @@ internal class BankControllerTest @Autowired constructor(
                     .andDo { print() }
                     .andExpect { status { isNotFound() } }
         }
+    }
+    
+    
+    @Nested
+    @DisplayName("DELETE /api/banks/{accountNumber}")
+    @TestInstance(Lifecycle.PER_CLASS)
+    inner class DeleteExistingBank{
+        
+        @Test
+        fun `should delete the bank with the given account number`() {
+        
+            // given
+            val accountNumber = "lukmanganteng"
+            
+            // when
+            val performDeleteRequest = mockMvc.delete("$url/$accountNumber")
 
+            val performGetRequest = mockMvc.get("$url/$accountNumber")
+            
+            // then
+            performDeleteRequest
+                    .andDo { print() }
+                    .andExpect {
+                        status { isNoContent() }
 
+                    }
+
+            performGetRequest
+                    .andExpect { status { isNotFound() } }
+
+        }
+        
+        
+        @Test
+        fun `should return NOT FOUND if no bank with given account number`() {
+        
+            // given
+            val invalidAccountNumber = "lukman123"
+            
+            // when
+            val performDeleteRequest = mockMvc.delete("$url/$invalidAccountNumber")
+            
+            // then
+            performDeleteRequest
+                    .andDo { print() }
+                    .andExpect { status { isNotFound() } }
+        }
+        
+        
     }
 }
