@@ -13,7 +13,7 @@ class MockBankDataSource: BankDataSource {
             BankBean("1003", 5.16, 39)
     )
 
-    //val banks = mutableListOf<BankBean>()
+    val tempBanks = mutableListOf<BankBean>()
 
     /**
      * Override Method
@@ -28,6 +28,7 @@ class MockBankDataSource: BankDataSource {
     override fun createBank(bankBean: BankBean): BankBean {
 
         if (banks.any { it.accountNumber == bankBean.accountNumber }) {
+
             throw IllegalArgumentException("Data ${bankBean.accountNumber} sudah ada di database")
         }
 
@@ -43,6 +44,13 @@ class MockBankDataSource: BankDataSource {
         banks.add(bankBean)
 
         return bankBean
+    }
+
+    override fun deleteBank(accountNumber: String) {
+        val currentBank = banks.firstOrNull { it.accountNumber == accountNumber }
+                ?: throw NoSuchElementException("Tidak dapat menemukan data dari $accountNumber")
+
+        banks.remove(currentBank)
     }
 
 
